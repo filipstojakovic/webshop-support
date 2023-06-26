@@ -2,7 +2,7 @@ package org.etfbl.support.webshopsupport.bean;
 
 import java.io.Serializable;
 
-public class UserBean implements Serializable {
+public class UserSupportBean implements Serializable {
 
     private static final long serialVersionUID = 1213893714706607554L;
 
@@ -61,13 +61,13 @@ public class UserBean implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserBean userBean = (UserBean) o;
+        UserSupportBean userSupportBean = (UserSupportBean) o;
 
-        if (loggedIn != userBean.loggedIn) return false;
-        if (!id.equals(userBean.id)) return false;
-        if (!username.equals(userBean.username)) return false;
-        if (!firstName.equals(userBean.firstName)) return false;
-        return lastName.equals(userBean.lastName);
+        if (loggedIn != userSupportBean.loggedIn) return false;
+        if (!id.equals(userSupportBean.id)) return false;
+        if (!username.equals(userSupportBean.username)) return false;
+        if (!firstName.equals(userSupportBean.firstName)) return false;
+        return lastName.equals(userSupportBean.lastName);
     }
 
     @Override

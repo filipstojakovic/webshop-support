@@ -27,39 +27,45 @@ public class MailService {
     public MailService() throws GeneralSecurityException, IOException {
         NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         GsonFactory jsonFactory = GsonFactory.getDefaultInstance();
-        service = new Gmail.Builder(httpTransport, jsonFactory, GmailCredential.getCredentials(httpTransport, jsonFactory))
-                .setApplicationName("webshop")
+        service = new Gmail.Builder(httpTransport, jsonFactory, GmailCredential.getCredentials(httpTransport,
+                jsonFactory)).setApplicationName("webshop")
                 .build();
     }
 
-    public void sendMail(String toEmail, String subject, String message) throws Exception {
-        //TODO: maybe make async new Thread().start();
-        Properties props = new Properties();
-        Session session = Session.getDefaultInstance(props, null);
-        MimeMessage email = new MimeMessage(session);
-        email.setFrom(new InternetAddress("filip.stojakovic@student.etf.unibl.org")); //TODO: extract mail
-        email.addRecipient(TO, new InternetAddress(toEmail));
-        email.setSubject(subject);
-        email.setText(message);
+    public void sendMail(String toEmail, String subject, String content) {
+        new Thread(() -> {
+            try {
+                Properties props = new Properties();
+                Session session = Session.getDefaultInstance(props, null);
+                MimeMessage email = new MimeMessage(session);
+                email.setFrom(new InternetAddress("filip.stojakovic@student.etf.unibl.org")); //TODO: extract mail
+                email.addRecipient(TO, new InternetAddress(toEmail));
+                email.setSubject(subject);
+                email.setText(content);
 
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        email.writeTo(buffer);
-        byte[] rawMessageBytes = buffer.toByteArray();
-        String encodedEmail = Base64.encodeBase64URLSafeString(rawMessageBytes);
-        Message msg = new Message();
-        msg.setRaw(encodedEmail);
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                email.writeTo(buffer);
+                byte[] rawMessageBytes = buffer.toByteArray();
+                String encodedEmail = Base64.encodeBase64URLSafeString(rawMessageBytes);
+                Message msg = new Message();
+                msg.setRaw(encodedEmail);
 
-        try {
-            msg = service.users().messages().send("me", msg).execute();
-            System.out.println("Message to: " + toEmail);
-            System.out.println(msg.toPrettyString());
-        } catch (GoogleJsonResponseException ex) {
-            GoogleJsonError error = ex.getDetails();
-            if (error.getCode() == 403) {
-                System.err.println("Unable to send message: " + ex.getDetails());
-            } else {
-                throw ex;
+                try {
+                    msg = service.users().messages().send("me", msg).execute();
+                    System.out.println("Message to: " + toEmail);
+                    System.out.println(msg.toPrettyString());
+                } catch (GoogleJsonResponseException ex) {
+                    GoogleJsonError error = ex.getDetails();
+                    if (error.getCode() == 403) {
+                        System.err.println("Unable to send message: " + ex.getDetails());
+                    } else {
+                        throw ex;
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-        }
+
+        }).start();
     }
 }

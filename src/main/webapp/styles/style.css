@@ -1,12 +1,19 @@
 
-body {
+.page-content {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 10px;
 }
 
 .search-container {
     display: flex;
+    align-items: center;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
     align-items: center;
 }
 

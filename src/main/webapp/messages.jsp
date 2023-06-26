@@ -4,11 +4,11 @@
 <%@ page import="org.etfbl.support.webshopsupport.dao.MessageDao" %>
 <%@ page import="java.util.ArrayList" %>
 
-<jsp:useBean id="userBean" type="org.etfbl.support.webshopsupport.bean.UserBean" scope="session"/>
+<jsp:useBean id="userSupportBean" type="org.etfbl.support.webshopsupport.bean.UserSupportBean" scope="session"/>
 <%! List<Message> messages = new ArrayList<>();
 %>
 <%
-    if (!(userBean.isLoggedIn())) response.sendRedirect("login.jsp");
+    if (!(userSupportBean.isLoggedIn())) response.sendRedirect("login.jsp");
     String action = request.getParameter("action");
     if (action != null && "search".equals(action)) {
         String search = request.getParameter("searchInput");
@@ -29,48 +29,61 @@
 </head>
 <body>
 
-<%@include file="WEB-INF/header.jsp" %>
-
-<div class="search-container">
-    <form method="post" action="messages.jsp?action=search">
-        <div class="search-container">
-            <i class="material-icons">search</i>
-            <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" type="text" id="searchInput" name="searchInput">
-                <label class="mdl-textfield__label" for="searchInput">Message content...</label>
+<div class="mdl-layout mdl-layout--fixed-header">
+    <%@include file="WEB-INF/header.jsp" %>
+    <main class="mdl-layout__content">
+        <div class="page-content">
+            <div class="search-container">
+                <form method="post" action="messages.jsp?action=search">
+                    <div class="search-container">
+                        <i class="material-icons">search</i>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="searchInput" name="searchInput">
+                            <label class="mdl-textfield__label" for="searchInput">Message content...</label>
+                        </div>
+                        <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                                style="margin-left: 10px">
+                            Search
+                        </button>
+                    </div>
+                </form>
+                <button onclick="location.href='messages.jsp';"
+                        style="margin-left: 10px"
+                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    Show all
+                </button>
             </div>
-            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                Search
-            </button>
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="width: 100%">
+                <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">From</th>
+                    <th class="mdl-data-table__cell--non-numeric">Title</th>
+                    <th class="mdl-data-table__cell--non-numeric">Message</th>
+                    <th class="mdl-data-table__cell--non-numeric">Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% for (Message message : messages) {%>
+                    <tr class="<%=message.getRead()?"is-read":"not-read"%>"
+                        onclick="location.href='send_message.jsp?id=<%=message.getId()%>'">
+                        <td class="mdl-data-table__cell--non-numeric"><%=message.getUser().getFullName()%>
+                        </td>
+                        <td class="mdl-data-table__cell--non-numeric"><%=message.getTitle()%>
+                        </td>
+                        <td class="mdl-data-table__cell--non-numeric"><%=message.getMessage()%>
+                        </td>
+                        <td class="mdl-data-table__cell--non-numeric"><%=message.getDate()%>
+                        </td>
+                        <td class="mdl-data-table__cell--non-numeric"><a class="<%=message.getRead()?"is-read":"not-read"%>"
+                                                                         href="send_message.jsp?id=<%=message.getId()%>">Send
+                            message
+                            &gt&gt</a></td>
+                    </tr>
+                <% } %>
+                </tbody>
+            </table>
         </div>
-    </form>
-    <button onclick="location.href='messages.jsp';"
-            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-        Show all
-    </button>
+    </main>
 </div>
-<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
-    <thead>
-    <tr>
-        <th class="mdl-data-table__cell--non-numeric">Title</th>
-        <th>Message</th>
-        <th>Date</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% for (Message message : messages) {%>
-    <tr class="<%=message.getRead()?"is-read":"not-read"%>"
-        onclick="location.href='send_message.jsp?id=<%=message.getId()%>';">
-        <td class="mdl-data-table__cell--non-numeric"><%=message.getTitle()%>
-        </td>
-        <td><%=message.getMessage()%>
-        </td>
-        <td><%=message.getDate()%>
-        </td>
-        <td><a href="send_message.jsp?id=<%=message.getId()%>">Send message</a></td>
-    </tr>
-    <% } %>
-    </tbody>
-</table>
 </body>
 </html>

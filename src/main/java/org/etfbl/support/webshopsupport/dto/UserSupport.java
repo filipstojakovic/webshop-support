@@ -1,27 +1,25 @@
 package org.etfbl.support.webshopsupport.dto;
 
 import java.io.Serializable;
-import java.util.Objects;
 
-public class User implements Serializable {
+public class UserSupport implements Serializable {
 
-    private static final long serialVersionUID = -1486692504993029597L;
-
+    private static final long serialVersionUID = 6162334130351570407L;
     private Long id;
     private String username;
+    private String password;
     private String firstName;
     private String lastName;
-    private String email;
 
-    public User() {
+    public UserSupport() {
     }
 
-    public User(Long id, String username, String firstName, String lastName, String email) {
+    public UserSupport(Long id, String username, String password, String firstName, String lastName) {
         this.id = id;
         this.username = username;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
     }
 
     public Long getId() {
@@ -40,6 +38,14 @@ public class User implements Serializable {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -56,39 +62,27 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFullName() {
-        return firstName + " " + lastName;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        User user = (User) o;
+        UserSupport that = (UserSupport) o;
 
-        if (!id.equals(user.id)) return false;
-        if (!username.equals(user.username)) return false;
-        if (!firstName.equals(user.firstName)) return false;
-        if (!lastName.equals(user.lastName)) return false;
-        return email.equals(user.email);
+        if (!id.equals(that.id)) return false;
+        if (!username.equals(that.username)) return false;
+        if (!password.equals(that.password)) return false;
+        if (!firstName.equals(that.firstName)) return false;
+        return lastName.equals(that.lastName);
     }
 
     @Override
     public int hashCode() {
         int result = id.hashCode();
         result = 31 * result + username.hashCode();
+        result = 31 * result + password.hashCode();
         result = 31 * result + firstName.hashCode();
         result = 31 * result + lastName.hashCode();
-        result = 31 * result + email.hashCode();
         return result;
     }
 }
