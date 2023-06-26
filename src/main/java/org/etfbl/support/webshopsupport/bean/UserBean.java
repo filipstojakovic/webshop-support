@@ -48,6 +48,10 @@ public class UserBean implements Serializable {
         return loggedIn;
     }
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
     }

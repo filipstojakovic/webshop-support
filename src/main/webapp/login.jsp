@@ -40,12 +40,12 @@
 <%@include file="WEB-INF/header.jsp" %>
 <h3>Login</h3>
 <form action="login.jsp" method="post" class="center">
-    <div class="mdl-textfield mdl-js-textfield">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
         <label class="mdl-textfield__label" for="username">Username</label>
         <input class="mdl-textfield__input" type="text" id="username" name="username" required>
     </div>
     <br>
-    <div class="mdl-textfield mdl-js-textfield">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
         <label class="mdl-textfield__label" for="password">Password</label>
         <input class="mdl-textfield__input" type="password" id="password" name="password" required>
     </div>

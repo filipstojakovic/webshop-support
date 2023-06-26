@@ -1,6 +1,7 @@
 package org.etfbl.support.webshopsupport.dto;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class User implements Serializable {
 
@@ -11,6 +12,10 @@ public class User implements Serializable {
     private String password;
     private String firstName;
     private String lastName;
+    private String email;
+
+    public User() {
+    }
 
     public User(Long id, String username, String password, String firstName, String lastName) {
         this.id = id;
@@ -18,9 +23,6 @@ public class User implements Serializable {
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-    }
-
-    public User() {
     }
 
     public Long getId() {
@@ -47,6 +49,14 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public String getLastName() {
         return lastName;
     }
@@ -55,12 +65,16 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getEmail() {
+        return email;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
     }
 
     @Override
@@ -73,8 +87,9 @@ public class User implements Serializable {
         if (!id.equals(user.id)) return false;
         if (!username.equals(user.username)) return false;
         if (!password.equals(user.password)) return false;
+        if (!firstName.equals(user.firstName)) return false;
         if (!lastName.equals(user.lastName)) return false;
-        return firstName.equals(user.firstName);
+        return Objects.equals(email, user.email);
     }
 
     @Override
@@ -82,8 +97,9 @@ public class User implements Serializable {
         int result = id.hashCode();
         result = 31 * result + username.hashCode();
         result = 31 * result + password.hashCode();
-        result = 31 * result + lastName.hashCode();
         result = 31 * result + firstName.hashCode();
+        result = 31 * result + lastName.hashCode();
+        result = 31 * result + (email != null ? email.hashCode() : 0);
         return result;
     }
 }

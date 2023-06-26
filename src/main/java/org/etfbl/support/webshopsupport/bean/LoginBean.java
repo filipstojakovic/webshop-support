@@ -9,10 +9,9 @@ import java.io.Serializable;
 @Setter
 public class LoginBean implements Serializable {
 
+    private static final long serialVersionUID = -4021922494651503066L;
+
     private String username;
     private String password;
 
-    public String sayHello(){
-        return "hello asd";
-    }
 }
