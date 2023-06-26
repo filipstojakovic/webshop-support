@@ -1,6 +1,5 @@
 package org.etfbl.support.webshopsupport.dto;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 public class User implements Serializable {

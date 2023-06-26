@@ -6,6 +6,7 @@ import org.etfbl.support.webshopsupport.dto.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserDao {
 
@@ -18,8 +19,7 @@ public class UserDao {
             PreparedStatement statement = DAOUtil.prepareStatement(connection, SELECT_BY_USERNAME, false, username);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                user = new User(rs.getLong("id"), rs.getString("username"), rs.getString("password"), rs.getString(
-                        "first_name"), rs.getString("last_name"));
+                user = getUserFromResultSet(rs);
             }
             statement.close();
         } catch (Exception ex) {
@@ -28,4 +28,14 @@ public class UserDao {
         }
         return user;
     }
+
+    public static User getUserFromResultSet(ResultSet rs) throws SQLException {
+        return getUserFromResultSet(rs, "id");
+    }
+
+    public static User getUserFromResultSet(ResultSet rs, String idColumnName) throws SQLException {
+        return new User(rs.getLong(idColumnName), rs.getString("username"), rs.getString("password"), rs.getString(
+                "first_name"), rs.getString("last_name"));
+    }
+
 }
